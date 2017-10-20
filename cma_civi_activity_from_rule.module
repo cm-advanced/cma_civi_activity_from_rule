@@ -1,0 +1,54 @@
+<?php
+/**
+ * @file
+ * Helper functions for PhillyCAM moderation
+ * triggered by rules
+ * to create civicrm activity
+
+ * when this funciton is called by a rule 
+ * it should be passed the current node; 
+ * the logged in user taking the action; 
+ * the civicrm activity id to be created
+ 
+ * cma_moderation_rules_civi_create_activity($node,$user,00);
+
+ * an activity of the type specified will be added 
+ * to the node author's contact record and that activity 
+ * will be 'with' or 'added by' the user taking the action 
+
+ */
+
+function cma_civi_activity_from_rule_create_activity($project_node,$saving_user,$activity_type_id){
+
+//  dsm($project_node);
+
+//contact to be acted on is the node author 
+  $contact_uid = $project_node->uid;
+
+// format link to node to be added to the activity details/note   
+  $project_title = $project_node->title;
+  $url_link = "<a href=/node/".$project_node->nid.">".$project_title."</a>";
+
+//get cid from uid/author of node 
+  $contact_cid = CRM_Core_BAO_UFMatch::getContactID($contact_uid);
+//  dsm($contact_cid);
+
+//  dsm($saving_user->contact_id);
+
+//  dsm($activity_type_id);
+
+  $message = "Moderation email activity detail, including link to project ".$url_link;
+  
+//  dsm($message);
+
+    $result = civicrm_api3('Activity', 'create', array(
+      'sequential' => 1,
+      'activity_type_id' => "69",
+      'subject' => "Moderation email activity subject",
+      'details' => $message,
+      'target_id' => $contact_cid,
+      'source_contact_id' => $saving_user->contact_id,
+    ));
+
+
+}
