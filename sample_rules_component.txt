@@ -1,0 +1,16 @@
+{ “rules_create_civi_activity_from_email” : {
+   “LABEL” : “Create Civi Activity From Email”,
+   “PLUGIN” : “rule”,
+   “OWNER” : “rules”,
+   “TAGS” : [ “civicrm”, “moderation”, “philly”, “rules” ],
+   “REQUIRES” : [ “php”, “rules” ],
+   “USES VARIABLES” : {
+     “project_node” : { “label” : “project_node”, “type” : “node” },
+     “saving_user” : { “label” : “saving_user”, “type” : “user” },
+     “activity_type_id” : { “label” : “activity_type_id”, “type” : “integer” }
+   },
+   “DO” : [
+     { “php_eval” : { “code” : “cma_civi_activity_from_rule_civi_create_activity($project_node,$saving_user,$activity_type_id);” } }
+   ]
+ }
+}
