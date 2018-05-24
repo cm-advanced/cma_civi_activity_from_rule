@@ -1,6 +1,6 @@
 name = CMA Civicrm create acvitities from drupal  rules
 package = Community Media Advanced
-description = "Helper module for CMA moderation fucntionality/module to create activities in civicrm when moderation emails are sent"
+description = "Helper module for CMA moderation fucntionality/module to create activities in civicrm when nodes are saved"
 
 version = "7.x-1.0"
 core = 7.x

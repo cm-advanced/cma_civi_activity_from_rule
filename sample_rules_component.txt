@@ -1,16 +1,19 @@
-{ “rules_create_civi_activity_from_email” : {
-   “LABEL” : “Create Civi Activity From Email”,
-   “PLUGIN” : “rule”,
-   “OWNER” : “rules”,
-   “TAGS” : [ “civicrm”, “moderation”, “philly”, “rules” ],
-   “REQUIRES” : [ “php”, “rules” ],
-   “USES VARIABLES” : {
-     “project_node” : { “label” : “project_node”, “type” : “node” },
-     “saving_user” : { “label” : “saving_user”, “type” : “user” },
-     “activity_type_id” : { “label” : “activity_type_id”, “type” : “integer” }
-   },
-   “DO” : [
-     { “php_eval” : { “code” : “cma_civi_activity_from_rule_civi_create_activity($project_node,$saving_user,$activity_type_id);” } }
-   ]
- }
+{ "rules_create_civi_activity_record_component" : {
+    "LABEL" : "Create Civi Activity Record Component",
+    "PLUGIN" : "rule",
+    "OWNER" : "rules",
+    "TAGS" : [ "civicrm", "moderation", "rules" ],
+    "REQUIRES" : [ "php", "rules" ],
+    "USES VARIABLES" : {
+      "project_node" : { "label" : "project_node", "type" : "node" },
+      "saving_user" : { "label" : "saving_user", "type" : "user" },
+      "activity_type_id" : { "label" : "activity_type_id", "type" : "integer" },
+      "subject" : { "label" : "subject", "type" : "text" },
+      "message" : { "label" : "message", "type" : "text" },
+      "add_link" : { "label" : "add_link", "type" : "integer" }
+    },
+    "DO" : [
+      { "php_eval" : { "code" : "\/\/ this component can be called from other rules\r\ncma_civi_activity_from_rule_create_activity($saved_node,$saving_user,$activity_type_id,$subject,$message,$add_link)" } }
+    ]
+  }
 }
