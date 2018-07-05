@@ -1,0 +1,24 @@
+{ "rules_create_civi_activity_record_using_component" : {
+    "LABEL" : "Create Civi Activity Record Using Component",
+    "PLUGIN" : "reaction rule",
+    "OWNER" : "rules",
+    "TAGS" : [ "civicrm", "moderation" ],
+    "REQUIRES" : [ "rules" ],
+    "ON" : { "node_update--article" : { "bundle" : "article" } },
+    "IF" : [
+      { "data_is" : { "data" : [ "node-unchanged:status" ], "value" : "0" } },
+      { "AND" : [ { "data_is" : { "data" : [ "node:status" ], "value" : "1" } } ] }
+    ],
+    "DO" : [
+      { "component_rules_create_civi_activity_record_component" : {
+          "project_node" : [ "node" ],
+          "saving_user" : [ "site:current-user" ],
+          "activity_type_id" : "1",
+          "subject" : "This is the subject of the activity created by the rule via the rule component ",
+          "message" : "This is the details of the activity created by the rule via the rule component ",
+          "add_link" : "1"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,61 @@
+<?php
+/**
+ * @file
+ * Helper functions for PhillyCAM moderation
+ * triggered by rules
+ * to create civicrm activity
+
+ * when this funciton is called by a rule 
+ * it should be passed the current node; 
+ * the logged in user taking the action; 
+ * the civicrm activity id to be created;
+ * the title/subject of the activity to be created;
+ * the details of the activity to be created;
+ * add a link to the node in the detail (0 for no, 1 for yes)
+ *      default is 1/yes  
+ 
+ * cma_moderation_rules_civi_create_activity($node,$user,00,$subject,$message,$add_link);
+
+ * an activity of the type specified will be added 
+ * to the node author's contact record and that activity 
+ * will be 'with' or 'added by' the user taking the action 
+
+ */
+
+function cma_civi_activity_from_rule_create_activity($saved_node,$saving_user,$activity_type_id,$subject,$message,$add_link){
+
+//  dsm($saved_node);
+
+//contact to be acted on is the node author 
+  $contact_uid = $saved_node->uid;
+
+// format link to node to be added to the activity details/note   
+  $node_title = $saved_node->title;
+  $url_link = "<a href=/node/".$saved_node->nid.">".$node_title."</a>";
+
+//get cid from uid/author of node 
+  $contact_cid = CRM_Core_BAO_UFMatch::getContactID($contact_uid);
+//  dsm($contact_cid);
+
+//  dsm($saving_user->contact_id);
+
+//  dsm($activity_type_id);
+
+  if ($add_link == "0") {
+    $message = $message;
+  }else{
+    $message = $message."  ".$url_link;
+  }
+//  dsm($message);
+
+  $result = civicrm_api3('Activity', 'create', array(
+    'sequential' => 1,
+    'activity_type_id' => $activity_type_id,
+    'subject' => $subject,
+    'details' => $message,
+    'target_id' => $contact_cid,
+    'source_contact_id' => $saving_user->contact_id,
+  ));
+
+
+}

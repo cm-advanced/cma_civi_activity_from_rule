@@ -1,0 +1,16 @@
+{ "rules_create_civi_activity_record_without_component" : {
+    "LABEL" : "Create Civi Activity Record Without Component",
+    "PLUGIN" : "reaction rule",
+    "OWNER" : "rules",
+    "TAGS" : [ "civicrm", "moderation" ],
+    "REQUIRES" : [ "rules", "php" ],
+    "ON" : { "node_update--article" : { "bundle" : "article" } },
+    "IF" : [
+      { "data_is" : { "data" : [ "node-unchanged:status" ], "value" : "0" } },
+      { "AND" : [ { "data_is" : { "data" : [ "node:status" ], "value" : "1" } } ] }
+    ],
+    "DO" : [
+      { "php_eval" : { "code" : "cma_civi_activity_from_rule_create_activity($node,[site:current-user],1,\u0022subject set by rule without component\u0022,\u0022detail set by rule without component,1)" } }
+    ]
+  }
+}
